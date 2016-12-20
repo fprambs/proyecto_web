@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/1.10/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.10/ref/settings/
 """
-
+from django.conf.global_settings import STATICFILES_DIRS
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -25,7 +25,7 @@ SECRET_KEY = ')by_#f38b+@fs8)3@7d4h6m$a#+19ph!6%qy30j&k)4kap0u)6'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com']
 
 
 # Application definition
@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'arrendados',
-    'rest_framework',
 
 ]
 
@@ -82,9 +81,9 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         #'ENGINE': 'django.db.backends.mysql',
         #'NAME': 'arrendados',
-        #'USER': 'root',
-        #'PASSWORD': '1029',
-        #'HOST': 'localhost',
+        #'USER': 'fprambss',
+        #'PASSWORD': 'f1e2l3i.',
+        #'HOST': 'fprambss.mysql.pythonanywhere-services.com',
         #'PORT': '3306 ',
     }
 }
@@ -127,3 +126,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_DIR=os.path.dirname(__file__)
+STATIC_ROOT = os.path.join(PROJECT_DIR, '../static/')
