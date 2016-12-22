@@ -20,11 +20,10 @@ from arrendados import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^usuarios/$',views.usuarios,name='usuarios'),
-    url(r'^usuario/([0-9]*)/$',views.usuario,name='usuario'),
-    url(r'^usuario/$',views.usuario,name='usuario'),
-    url(r'^propiedades/$',views.propiedades,name='propiedades'),
-    url(r'^propiedad/([0-9]*)/$',views.propiedad,name='propiedad'),
-    url(r'^propiedad/$',views.propiedad,name='propiedad'),
+    url(r'^Users/$',views.Users,name='Users'),
+    url(r'^Users/([0-9]*)/$',views.User,name='User'),
+    url(r'^Properties/$',views.Properties,name='Properties'),
+    url(r'^Properties/([0-9]*)/$',views.Property,name='Property'),
+
 
 ]

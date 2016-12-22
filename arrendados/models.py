@@ -8,8 +8,10 @@ class Usuario(models.Model):
     fecha_nacimiento = models.DateField()
     email= models.CharField(max_length=80, unique=True)
     password = models.CharField(max_length=15)
-    telefono = models.IntegerField()
-    direccion = models.CharField(max_length=80)
+    telefono = models.IntegerField(blank=True, null= True)
+    direccion = models.CharField(max_length=80, null=True, blank=True)
+    check_offer = models.NullBooleanField(null= True, default=False)
+
 
 class Tipo_Usuario(models.Model):
     tipo = models.CharField(max_length=45)
