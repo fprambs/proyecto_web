@@ -108,7 +108,7 @@ def User(request,id="0"):
 
         except Exception as c:
             print c
-            response ={'response': 'No se cambiaron los registros', 'code': '500', 'status': 'ERROR'}
+            response ={'response': 'No se cambiaron los registros, ID no encontrada', 'code': '500', 'status': 'ERROR'}
             successful_json = json.dumps(response)
             return HttpResponse(successful_json, content_type='application/json', status=200)
 
@@ -188,29 +188,26 @@ def Property(request,id="0"):
 
     if request.method == 'PUT':
         try:
-            usuario = Usuario.objects.get(id=id)
+            propiedad = Propiedad.objects.get(id=id)
             json_data = json.loads(request.body)
-            nombre = json_data['nombre']
-            fecha_nacimiento = json_data['fecha_nacimiento']
-            email = json_data['email']
-            password = json_data['password']
-            telefono = json_data['telefono']
             direccion = json_data['direccion']
-            tipo_usuario = json_data['tipo_usuario']
-            check_offer= json_data['check_offer']
-            #Obtengo  los datos a modificar y los guardo nuevamente
-            datos_usuario = Usuario(id=id, nombre=nombre,fecha_nacimiento=fecha_nacimiento,email=email,password=password,telefono=telefono,direccion=direccion, check_offer=check_offer)
-            datos_usuario.save() 
+            cantidad_disponible = json_data['cantidad_disponible']
+            cantidad = json_data['cantidad']
+            latitud = json_data['latitud']
+            longitud = json_data['longitud']
+            Ciudad_idCiudad = json_data['Ciudad_idCiudad']
+            Tipo_Propiedad_idTipo_Propiedad = json_data['Tipo_Propiedad_idTipo_Propiedad']
 
-            #Obtengo la id de la relacion segun la id del usuario
-            usuario_relacion = Usuario_Tiene_Tipo_Usuario.objects.get(Usuario_idUsuario=id)
 
-            #Obtengo la id del tipo de usuario segun la id del usuario
-            tipo_usuario1 = Tipo_Usuario.objects.get(id=tipo_usuario)
+            #Obtengo el objeto del tipo de propiedad segun la id del tipo de propiedad
+            tipo_propiedad = Tipo_Propiedad.objects.get(id=Tipo_Propiedad_idTipo_Propiedad)
 
-            #Modifico la tabla Usuario_Tiene_Tipo_Usuario segun los datos nuevos
-            datos_tipo = Usuario_Tiene_Tipo_Usuario(id=usuario_relacion.id, Usuario_idUsuario=datos_usuario, Tipo_Usuario_idTipo=tipo_usuario1)
-            datos_tipo.save()
+            #Obtengo el objeto de la ciudad segun la id de la ciudad
+            ciudad = Ciudad.objects.get(id=Ciudad_idCiudad)
+
+            #Hago un INSERT a la BD en la tabla Propiedad
+            datos_propiedad = Propiedad(id=id, direccion=direccion, cantidad_disponible=cantidad_disponible,cantidad=cantidad, latitud=latitud,longitud=longitud,Ciudad_idCiudad=ciudad,Tipo_Propiedad_idTipo_Propiedad = tipo_propiedad)
+            datos_propiedad.save()
 
             response ={'response': 'Se cambiaron correctamente los registros', 'code': '200', 'status': 'OK'}
             successful_json = json.dumps(response)
@@ -219,12 +216,27 @@ def Property(request,id="0"):
 
         except Exception as c:
             print c
-            response ={'response': 'No se cambiaron los registros', 'code': '500', 'status': 'ERROR'}
+            response ={'response': 'No se cambiaron los registros, ID no encontrada', 'code': '500', 'status': 'ERROR'}
             successful_json = json.dumps(response)
             return HttpResponse(successful_json, content_type='application/json', status=200)
 
 
-    
+    if request.method == 'DELETE':
+        try:
+            propiedad = Propiedad.objects.get(id=id)
+            propiedad.delete()
+            
+            if propiedad.id is None:
+                response ={'response': 'La propiedad de id: ' + str(id) + ' ha sido eliminada correctamente', 'code': '200', 'status': 'OK'}
+                successful_json = json.dumps(response)
+                return HttpResponse(successful_json, content_type='application/json', status=200)
+
+        except ObjectDoesNotExist as c:
+                response ={'response': 'La Propiedad de id: ' + str(id) + ' no existe', 'code': '500', 'status': 'ERROR'}
+                successful_json = json.dumps(response)
+                return HttpResponse(successful_json, content_type='application/json', status=500)
+
+
 
 
 
