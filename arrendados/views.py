@@ -186,6 +186,44 @@ def Property(request,id="0"):
         propiedad = serializers.serialize("json",propiedad)
         return HttpResponse(propiedad, content_type='application/json')
 
+    if request.method == 'PUT':
+        try:
+            usuario = Usuario.objects.get(id=id)
+            json_data = json.loads(request.body)
+            nombre = json_data['nombre']
+            fecha_nacimiento = json_data['fecha_nacimiento']
+            email = json_data['email']
+            password = json_data['password']
+            telefono = json_data['telefono']
+            direccion = json_data['direccion']
+            tipo_usuario = json_data['tipo_usuario']
+            check_offer= json_data['check_offer']
+            #Obtengo  los datos a modificar y los guardo nuevamente
+            datos_usuario = Usuario(id=id, nombre=nombre,fecha_nacimiento=fecha_nacimiento,email=email,password=password,telefono=telefono,direccion=direccion, check_offer=check_offer)
+            datos_usuario.save() 
+
+            #Obtengo la id de la relacion segun la id del usuario
+            usuario_relacion = Usuario_Tiene_Tipo_Usuario.objects.get(Usuario_idUsuario=id)
+
+            #Obtengo la id del tipo de usuario segun la id del usuario
+            tipo_usuario1 = Tipo_Usuario.objects.get(id=tipo_usuario)
+
+            #Modifico la tabla Usuario_Tiene_Tipo_Usuario segun los datos nuevos
+            datos_tipo = Usuario_Tiene_Tipo_Usuario(id=usuario_relacion.id, Usuario_idUsuario=datos_usuario, Tipo_Usuario_idTipo=tipo_usuario1)
+            datos_tipo.save()
+
+            response ={'response': 'Se cambiaron correctamente los registros', 'code': '200', 'status': 'OK'}
+            successful_json = json.dumps(response)
+            return HttpResponse(successful_json, content_type='application/json', status=200)
+
+
+        except Exception as c:
+            print c
+            response ={'response': 'No se cambiaron los registros', 'code': '500', 'status': 'ERROR'}
+            successful_json = json.dumps(response)
+            return HttpResponse(successful_json, content_type='application/json', status=200)
+
+
     
 
 
