@@ -1,4 +1,7 @@
 *.pyc
 settings.py
+<<<<<<< HEAD
 db.sqlite3
+=======
+>>>>>>> ec3e33326bd53e3a32de6adcd2ab8d12446fd866
 
